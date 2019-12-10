@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup as BS
 
 username = input('CodeChef Username: ')
 password = input('CodeChef Password: ')
+scan_username = input('CodeChef Username of the user to be scraped: ')
 problems = {}
 
 extensions = {'ADA': '.abd', 'C++14': '.cpp', 'JAVA': '.java', 'PYTH': '.py', 'PYTH 3.6': '.py', 'C#': '.cs',
@@ -50,13 +51,13 @@ with requests.session() as s:
 
     def get_problems():
         print('Fetching AC problems!')
-        len_username = len(username)
-        r = s.get('https://www.codechef.com/users/' + username, headers=headers)
+        len_username = len(scan_username)
+        r = s.get('https://www.codechef.com/users/' + scan_username, headers=headers)
         data = r.text
         soup = BS(data, 'html5lib')
         for link in soup.find_all('a'):
             x = str(link.get('href'))
-            if 'status' in x and username in x:
+            if 'status' in x and scan_username in x:
                 x = x[:len(x) - len_username - 1]
                 ls = x.split('/')
                 if len(ls) == 3:
@@ -75,17 +76,17 @@ with requests.session() as s:
         print('Extracting solutions!')
         for i in problems:
             try:
-                os.mkdir(str('CodeChef Solutions/' + username + '/' + i))
+                os.mkdir(str('CodeChef Solutions/' + scan_username + '/' + i))
             except:
                 print('Some error occurred during creation of folders!')
             for j in problems[i]:
                 if i == 'PRACTICE':
                     r = s.get(
-                        'https://www.codechef.com/status/' + j + ',' + username + '?sort_by=All&sorting_order=asc&language=All&status=15&Submit=GO',
+                        'https://www.codechef.com/status/' + j + ',' + scan_username + '?sort_by=All&sorting_order=asc&language=All&status=15&Submit=GO',
                         headers=headers)
                 else:
                     r = s.get(
-                        'https://www.codechef.com/' + i + '/status/' + j + ',' + username + '?sort_by=All&sorting_order=asc&language=All&status=15&Submit=GO',
+                        'https://www.codechef.com/' + i + '/status/' + j + ',' + scan_username + '?sort_by=All&sorting_order=asc&language=All&status=15&Submit=GO',
                         headers=headers)
                 data = r.text
                 soup = BS(data, 'html5lib')
@@ -101,7 +102,7 @@ with requests.session() as s:
                 soup = BS(data, 'html5lib')
                 code = soup.findAll('pre')[0].text
                 filename = j + ' ' + sol_id + extensions[lang_code]
-                path = str('CodeChef Solutions/' + username + '/' + i + '/' + filename)
+                path = str('CodeChef Solutions/' + scan_username + '/' + i + '/' + filename)
                 code_file = open(path, 'w+')
                 code_file.write(code)
                 code_file.close()
@@ -115,11 +116,11 @@ if __name__ == "__main__":
         print('Directory CodeChef Solutions already exists!')
 
     try:
-        os.mkdir(str('CodeChef Solutions/' + username))
+        os.mkdir(str('CodeChef Solutions/' + scan_username))
     except FileExistsError:
-        print('Directory CodeChef Solutions/' + username + ' already exists!')
-        print('Deleting directory CodeChef Solutions/' + username)
-        os.rmdir(str('CodeChef Solutions/' + username))
-        print('Creating directory CodeChef Solutions/' + username)
-        os.mkdir(str('CodeChef Solutions/' + username))
+        print('Directory CodeChef Solutions/' + scan_username + ' already exists!')
+        print('Deleting directory CodeChef Solutions/' + scan_username)
+        os.rmdir(str('CodeChef Solutions/' + scan_username))
+        print('Creating directory CodeChef Solutions/' + scan_username)
+        os.mkdir(str('CodeChef Solutions/' + scan_username))
     main()
