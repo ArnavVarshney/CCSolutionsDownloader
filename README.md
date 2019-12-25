@@ -20,9 +20,9 @@ Install dependencies:
 
 Run python3 main.py in CMD/Terminal and follow on-screen instructions
 
-Let me know about any feedback, feature requests and bugs you face! :slight_smile:
+Let me know about any feedback, feature requests and bugs you face! (ᵔᴥᵔ)
 
-<h2 align = "center"> Proof of Concept</h2>
+<p align="center"> <h2 align = "center"> Proof of Concept</h2> </p>
 
 <a href = "https://pastebin.com/vFcpNKBK">Console Output</a>
 
@@ -30,9 +30,10 @@ Let me know about any feedback, feature requests and bugs you face! :slight_smil
 
 <h2 align = "center"> Credits </h2>
 
-<a href = "https://discuss.codechef.com/t/a-tool-to-download-all-your-successful-codechef-solutions-in-one-go/13890">mb1994’s project</a>
+<p align="center"> <a href = "https://discuss.codechef.com/t/a-tool-to-download-all-your-successful-codechef-solutions-in-one-go/13890">mb1994’s project</a> </p>
 
-<a href = "https://discuss.codechef.com/t/codechef-solutions-downloader/30333">sandy999’s project</a>
+<p align="center"> <a href = "https://discuss.codechef.com/t/codechef-solutions-downloader/30333">sandy999’s project</a> </p>
+
 
 <h2 align = "center"> License </h2>
-<a href  = "https://github.com/ArnavVarshney/CCSolutionsDownloader/blob/master/LICENSE"> MIT License </a>
+<p align="center"> <a href  = "https://github.com/ArnavVarshney/CCSolutionsDownloader/blob/master/LICENSE"> MIT License </a> </p>
