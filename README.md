@@ -1,4 +1,4 @@
-<h1 align = "center"> CCSolutionsDownloader </h1>
+<h1 align = "center"> Codechef Solutions Downloader </h1>
 <h3 align = "center"> A web crawler that allows you to download all your AC submissions on CodeChef. </h3>
 
 <h2 align = "center"> About </h2>
