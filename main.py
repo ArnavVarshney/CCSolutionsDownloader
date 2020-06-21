@@ -9,7 +9,7 @@ password = input('CodeChef Password: ')
 scan_username = input('CodeChef Username of the user to be scraped: ')
 problems = {}
 
-extensions = {'ADA': '.abd', 'C++14': '.cpp', 'JAVA': '.java', 'PYTH': '.py', 'PYTH 3.6': '.py', 'C#': '.cs',
+extensions = {'ADA': '.abd', 'C++14': '.cpp', 'JAVA': '.java', 'PYPY':'.py','PYTH': '.py', 'PYTH 3.6': '.py', 'C#': '.cs',
               'PAS fpc': '.pas', 'PAS gpc': '.pas', 'RUBY': '.ruby', 'PHP': '.php', 'GO': '.go', 'NODEJS': '.js',
               'HASK': '.hs', 'SCALA': 'scala', 'D': '.d', 'PERL': '.pl', 'PERL6': '.pl', 'FORT': '.f', 'WSPC': '.ws',
               'CAML': '.ml', 'BF': '.bf', 'ASM': '.asm', 'CLPS': '.cli', 'PRLG': '.pro', 'ICON': '.icn',
@@ -35,7 +35,7 @@ with requests.session() as s:
             form['name'] = username
             form['pass'] = password
             response = s.post('https://www.codechef.com/', data=form)
-            if response.url == 'https://www.codechef.com/node':
+            if response.url == 'https://www.codechef.com/':
                 print('Logged in!')
                 get_problems()
             elif response.url == 'https://www.codechef.com/session/limit':
