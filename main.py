@@ -2,6 +2,7 @@ import os
 
 import lxml.html as lx
 import requests
+import shutil
 from bs4 import BeautifulSoup as BS
 
 username = input('CodeChef Username: ')
@@ -9,7 +10,8 @@ password = input('CodeChef Password: ')
 scan_username = input('CodeChef Username of the user to be scraped: ')
 problems = {}
 
-extensions = {'ADA': '.abd', 'C++14': '.cpp', 'JAVA': '.java', 'PYPY':'.py','PYTH': '.py', 'PYTH 3.6': '.py', 'C#': '.cs',
+extensions = {'ADA': '.abd', 'C++14': '.cpp', 'JAVA': '.java', 'PYPY': '.py', 'PYTH': '.py', 'PYTH 3.6': '.py',
+              'C#': '.cs',
               'PAS fpc': '.pas', 'PAS gpc': '.pas', 'RUBY': '.ruby', 'PHP': '.php', 'GO': '.go', 'NODEJS': '.js',
               'HASK': '.hs', 'SCALA': 'scala', 'D': '.d', 'PERL': '.pl', 'PERL6': '.pl', 'FORT': '.f', 'WSPC': '.ws',
               'CAML': '.ml', 'BF': '.bf', 'ASM': '.asm', 'CLPS': '.cli', 'PRLG': '.pro', 'ICON': '.icn',
@@ -34,8 +36,9 @@ with requests.session() as s:
             form = {x.attrib["name"]: x.attrib["value"] for x in hidden_inputs}
             form['name'] = username
             form['pass'] = password
-            response = s.post('https://www.codechef.com/', data=form)
-            if response.url == 'https://www.codechef.com/':
+            form['form_id'] = 'new_login_form'
+            response = s.post('https://www.codechef.com/', data=form, headers=headers)
+            if response.url == 'https://www.codechef.com/node':
                 print('Logged in!')
                 get_problems()
             elif response.url == 'https://www.codechef.com/session/limit':
@@ -114,13 +117,12 @@ if __name__ == "__main__":
         os.mkdir('CodeChef Solutions')
     except FileExistsError:
         print('Directory CodeChef Solutions already exists!')
-
     try:
         os.mkdir(str('CodeChef Solutions/' + scan_username))
     except FileExistsError:
         print('Directory CodeChef Solutions/' + scan_username + ' already exists!')
         print('Deleting directory CodeChef Solutions/' + scan_username)
-        os.rmdir(str('CodeChef Solutions/' + scan_username))
+        shutil.rmtree(str('CodeChef Solutions/' + scan_username))
         print('Creating directory CodeChef Solutions/' + scan_username)
         os.mkdir(str('CodeChef Solutions/' + scan_username))
     main()

@@ -14,6 +14,10 @@ Edit: The downloader has been modified to fetch public submissions of a given us
 Clone repository to your PC
 Install dependencies:
 
+    pip install -r requirements.txt
+    
+Or
+
     pip install lxml
     pip install bs4
     pip install requests
