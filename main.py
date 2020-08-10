@@ -29,27 +29,27 @@ headers = {
 
 with requests.session() as s:
     def main():
-        try:
-            login = s.get('https://www.codechef.com/', headers=headers)
-            login_html = lx.fromstring(login.text)
-            hidden_inputs = login_html.xpath(r'//form//input[@type="hidden"]')
-            form = {x.attrib["name"]: x.attrib["value"] for x in hidden_inputs}
-            form['name'] = username
-            form['pass'] = password
-            form['form_id'] = 'new_login_form'
-            response = s.post('https://www.codechef.com/', data=form, headers=headers)
-            if response.url == 'https://www.codechef.com/node':
-                print('Logged in!')
-                get_problems()
-            elif response.url == 'https://www.codechef.com/session/limit':
-                print('Session limit reached! Logout of all active sessions before continuing!')
-            else:
-                print('Login failed! Check credentials and try again!')
-            s.get('https://www.codechef.com/logout', headers=headers)
-            print('Logged out!')
-        except:
-            print('Some error occurred!')
-            s.get('https://www.codechef.com/logout', headers=headers)
+        # try:
+        login = s.get('https://www.codechef.com/', headers=headers)
+        login_html = lx.fromstring(login.text)
+        hidden_inputs = login_html.xpath(r'//form//input[@type="hidden"]')
+        form = {x.attrib["name"]: x.attrib["value"] for x in hidden_inputs}
+        form['name'] = username
+        form['pass'] = password
+        form['form_id'] = 'new_login_form'
+        response = s.post('https://www.codechef.com/', data=form, headers=headers)
+        if response.url == 'https://www.codechef.com/node':
+            print('Logged in!')
+            get_problems()
+        elif response.url == 'https://www.codechef.com/session/limit':
+            print('Session limit reached! Logout of all active sessions before continuing!')
+        else:
+            print('Login failed! Check credentials and try again!')
+        s.get('https://www.codechef.com/logout', headers=headers)
+        print('Logged out!')
+        # except:
+        #     print('Some error occurred!')
+        s.get('https://www.codechef.com/logout', headers=headers)
 
 
     def get_problems():
@@ -83,33 +83,36 @@ with requests.session() as s:
             except:
                 print('Some error occurred during creation of folders!')
             for j in problems[i]:
-                if i == 'PRACTICE':
-                    r = s.get(
-                        'https://www.codechef.com/status/' + j + ',' + scan_username + '?sort_by=All&sorting_order=asc&language=All&status=15&Submit=GO',
-                        headers=headers)
-                else:
-                    r = s.get(
-                        'https://www.codechef.com/' + i + '/status/' + j + ',' + scan_username + '?sort_by=All&sorting_order=asc&language=All&status=15&Submit=GO',
-                        headers=headers)
-                data = r.text
-                soup = BS(data, 'html5lib')
-                ls = soup.findAll('td', {'width': '60'})
-                sol_id = ls[0].text
-                r = s.get('http://www.codechef.com/viewsolution/' + sol_id, headers=headers)
-                data = r.text
-                soup = BS(data, 'html5lib')
-                st = str(soup)
-                lang_code = st[st.index('languageShortName') + 20:st.index('solutionMemory') - 3]
-                r = s.get('http://www.codechef.com/viewplaintext/' + sol_id, headers=headers)
-                data = r.text
-                soup = BS(data, 'html5lib')
-                code = soup.findAll('pre')[0].text
-                filename = j + ' ' + sol_id + extensions[lang_code]
-                path = str('CodeChef Solutions/' + scan_username + '/' + i + '/' + filename)
-                code_file = open(path, 'w+')
-                code_file.write(code)
-                code_file.close()
-                print(filename + ' saved')
+                try:
+                    if i == 'PRACTICE':
+                        r = s.get(
+                            'https://www.codechef.com/status/' + j + ',' + scan_username + '?sort_by=All&sorting_order=asc&language=All&status=15&Submit=GO',
+                            headers=headers)
+                    else:
+                        r = s.get(
+                            'https://www.codechef.com/' + i + '/status/' + j + ',' + scan_username + '?sort_by=All&sorting_order=asc&language=All&status=15&Submit=GO',
+                            headers=headers)
+                    data = r.text
+                    soup = BS(data, 'html5lib')
+                    ls = soup.findAll('td', {'width': '60'})
+                    sol_id = ls[0].text
+                    r = s.get('http://www.codechef.com/viewsolution/' + sol_id, headers=headers)
+                    data = r.text
+                    soup = BS(data, 'html5lib')
+                    st = str(soup)
+                    lang_code = st[st.index('languageShortName') + 20:st.index('solutionMemory') - 3]
+                    r = s.get('http://www.codechef.com/viewplaintext/' + sol_id, headers=headers)
+                    data = r.text
+                    soup = BS(data, 'html5lib')
+                    code = soup.findAll('pre')[0].text
+                    filename = j + ' ' + sol_id + extensions[lang_code]
+                    path = str('CodeChef Solutions/' + scan_username + '/' + i + '/' + filename)
+                    code_file = open(path, 'w+')
+                    code_file.write(code)
+                    code_file.close()
+                    print(filename + ' saved')
+                except:
+                    print(f'Could not save for {j}')
 
 if __name__ == "__main__":
     try:
