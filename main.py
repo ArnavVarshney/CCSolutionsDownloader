@@ -29,26 +29,26 @@ headers = {
 
 with requests.session() as s:
     def main():
-        # try:
-        login = s.get('https://www.codechef.com/', headers=headers)
-        login_html = lx.fromstring(login.text)
-        hidden_inputs = login_html.xpath(r'//form//input[@type="hidden"]')
-        form = {x.attrib["name"]: x.attrib["value"] for x in hidden_inputs}
-        form['name'] = username
-        form['pass'] = password
-        form['form_id'] = 'new_login_form'
-        response = s.post('https://www.codechef.com/', data=form, headers=headers)
-        if response.url == 'https://www.codechef.com/node':
-            print('Logged in!')
-            get_problems()
-        elif response.url == 'https://www.codechef.com/session/limit':
-            print('Session limit reached! Logout of all active sessions before continuing!')
-        else:
-            print('Login failed! Check credentials and try again!')
-        s.get('https://www.codechef.com/logout', headers=headers)
-        print('Logged out!')
-        # except:
-        #     print('Some error occurred!')
+        try:
+            login = s.get('https://www.codechef.com/', headers=headers)
+            login_html = lx.fromstring(login.text)
+            hidden_inputs = login_html.xpath(r'//form//input[@type="hidden"]')
+            form = {x.attrib["name"]: x.attrib["value"] for x in hidden_inputs}
+            form['name'] = username
+            form['pass'] = password
+            form['form_id'] = 'new_login_form'
+            response = s.post('https://www.codechef.com/', data=form, headers=headers)
+            if response.url == 'https://www.codechef.com/node':
+                print('Logged in!')
+                get_problems()
+            elif response.url == 'https://www.codechef.com/session/limit':
+                print('Session limit reached! Logout of all active sessions before continuing!')
+            else:
+                print('Login failed! Check credentials and try again!')
+            s.get('https://www.codechef.com/logout', headers=headers)
+            print('Logged out!')
+        except:
+            print('Some error occurred!')
         s.get('https://www.codechef.com/logout', headers=headers)
 
 
